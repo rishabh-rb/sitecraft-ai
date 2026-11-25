@@ -52,7 +52,7 @@ import { cancelGenerationJob, getGenerationJob, startGenerationJob, subscribeGen
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
 
-const port = Number(process.env.BACKEND_PORT || 4000);
+const port = Number(process.env.PORT || process.env.BACKEND_PORT || 4000);
 const provider = createProvider();
 const requestBuckets = new Map<string, { startedAt: number; count: number }>();
 const rateLimitRules: Array<{ match: RegExp; limit: number; windowMs: number }> = [
@@ -811,7 +811,7 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(port, () => {
+server.listen(port, process.env.NODE_ENV === "production" ? "0.0.0.0" : undefined, () => {
   console.log(JSON.stringify({
     event: "backend_started",
     port,
