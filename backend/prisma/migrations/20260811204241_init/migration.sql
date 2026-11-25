@@ -1,0 +1,4 @@
+-- Historical compatibility migration.
+-- The database already contains this initialization under this migration name.
+-- The repository's canonical schema is created by 20260811162442_init, so this
+-- entry intentionally performs no additional SQL on fresh databases.

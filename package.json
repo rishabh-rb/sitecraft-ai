@@ -1,0 +1,43 @@
+{
+  "name": "sitecraft-ai",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "ml"
+  ],
+  "scripts": {
+    "ui:revert": "node scripts/restore-ui.mjs --apply",
+    "check:ui": "node --import tsx scripts/check-ui.mts",
+    "start": "concurrently -k -n frontend,backend -c cyan,magenta \"npm --workspace frontend start\" \"npm --workspace backend start\"",
+    "dev": "npm run build:ml && concurrently -k -n frontend,backend -c cyan,magenta \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:clean": "node scripts/reset-dev.mjs && npm run dev",
+    "check:routes": "node scripts/check-routes.mjs",
+    "db:check": "npm --workspace backend run db:check",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "dev:backend": "npm --workspace backend run dev",
+    "build": "npm run build:ml && npm run build:frontend && npm run build:backend",
+    "build:ml": "npm --workspace ml run build",
+    "build:frontend": "npm --workspace frontend run build",
+    "build:backend": "npm --workspace backend run build",
+    "clean": "rm -rf frontend/.next backend/dist ml/dist",
+    "kill:ports": "lsof -ti:3000,4000 | xargs kill -9 2>/dev/null || true",
+    "typecheck": "npm run build:ml && npm run typecheck:backend && npm run typecheck:frontend",
+    "typecheck:ml": "npm --workspace ml run typecheck",
+    "typecheck:backend": "npm --workspace backend run typecheck",
+    "typecheck:frontend": "npm --workspace frontend run typecheck",
+    "lint": "npm --workspace frontend run lint",
+    "test": "npm --workspace backend run test",
+    "prisma:validate": "npm --workspace backend run prisma:validate",
+    "prisma:generate": "npm --workspace backend run prisma:generate"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1161.0",
+    "@aws-sdk/s3-request-presigner": "^3.1161.0",
+    "dotenv": "^18.0.9"
+  }
+}
